@@ -1,5 +1,5 @@
 "use client"
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { NextReactP5Wrapper } from "@p5-wrapper/next";
 
 function sketch(p5) {
@@ -187,23 +187,6 @@ R      | Reset image
     p5.text(instructions, CANVAS_SIZE +50, CANVAS_SIZE /2  + 50);
   
   }
-
-  p5.updateWithProps = props => {
-    // for reading props passed to componend wrapper
-
-    // if (props.rotation) {
-    //   rotation = (props.rotation * Math.PI) / 180;
-    // }
-
-    // if (props.width) {
-    //   canvasWidth = props.width
-
-    // }
-
-    // if (props.height) {
-    //   canvasHeight = props.height
-    // }
-  };
 
   /**
    * Used to reload the original selected image, if the mask is not applied locally, then return the selected mask to the original one
