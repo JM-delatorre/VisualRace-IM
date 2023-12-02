@@ -86,7 +86,7 @@ function sketch(p5) {
 
   // Defining other global variables
   const CANVAS_SIZE = 800;
-  const HISTOGRAM_HEIGHT = 200;
+  const HISTOGRAM_HEIGHT = 400;
   const FILES_ZONES_HEIGHT = 100;
   let FONT;
   let mask_title;
@@ -94,6 +94,7 @@ function sketch(p5) {
   let masking_canvas;
   let histogram_canvas;
   let histograms = [];
+  let message;
 
   p5.preload = () => {
     // Loading the font
@@ -106,10 +107,10 @@ function sketch(p5) {
   }
 
   p5.setup = () => {
+
     
-    // p5.createCanvas(p5.parent.offsetWidth, p5.parent.offsetHeight).parent('canvas-container');
-    // window.addEventListener('resize', () => resizeCanvas(p5));
-    p5.createCanvas(CANVAS_SIZE, CANVAS_SIZE + HISTOGRAM_HEIGHT);
+  
+    p5.createCanvas(CANVAS_SIZE*2  , CANVAS_SIZE ).parent('canvas-container');
     p5.pixelDensity(1);
 
     // Creating the masking canvas
@@ -119,11 +120,11 @@ function sketch(p5) {
 
     // Creating the file input
     let file_input = p5.createFileInput(handleFile);
-    file_input.position(10, CANVAS_SIZE + HISTOGRAM_HEIGHT + 30);
+    file_input.position(CANVAS_SIZE + (CANVAS_SIZE  - 200), CANVAS_SIZE );
 
     // Creating the histogram canvas
     histogram_canvas = p5.createGraphics(CANVAS_SIZE, HISTOGRAM_HEIGHT);
-    histogram_canvas.position(0, CANVAS_SIZE);
+    histogram_canvas.position(CANVAS_SIZE, 0);
 
     // Rezising the images to the size of the masking canvas
     for (let i = 0; i < loaded_images.length; i++) {
@@ -167,6 +168,24 @@ function sketch(p5) {
 
     // Display the histogram if the flag is true
     if (show_histogram) drawHistogram();
+    // Add text inside the canvas
+    p5.fill(255);
+    p5.textSize(20);
+    
+    const instructions = `
+Key  | Description
+-------|-----------------------------------
+F      | Change mask                       
+G     | Show histogram                    
+H     | Change image                      
+J      | Change Histogram                  
+K      | Change mask mode                  
+V      | Decrease brightness               
+B      | Increase brightness               
+R      | Reset image                       
+`.trim(); 
+    p5.text(instructions, CANVAS_SIZE +50, CANVAS_SIZE /2  + 50);
+  
   }
 
   p5.updateWithProps = props => {
@@ -333,7 +352,7 @@ function sketch(p5) {
 
     // Display the histogram
     displayName(name, histogram_canvas);
-    p5.image(histogram_canvas, 0, CANVAS_SIZE);
+    p5.image(histogram_canvas, CANVAS_SIZE, 0);
   }
 
 
@@ -599,22 +618,9 @@ function sketch(p5) {
 
 function P5Sketch() {
 
-  const [rotation, setRotation] = useState(0);
-
-  useEffect(() => {
-    const interval = setInterval(
-      () => setRotation(rotation => rotation + 100),
-      100
-    );
-
-    return () => {
-      clearInterval(interval);
-    };
-  }, []);
-
   return ( 
-    <div id="canvas-container">
-      <NextReactP5Wrapper sketch={sketch} rotation={rotation} />
+    <div id="canvas-container" className="h-screen flex items-center justify-center">
+      <NextReactP5Wrapper sketch={sketch} />
     </div>
   );
 }
